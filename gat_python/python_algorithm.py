@@ -53,10 +53,9 @@ class GameAlgorithm(object):
                 self.read_incoming_message()
             except Exception as e:
                 print(str(e))
-                # self.send_error(str(sys.exc_info()[2]))
                 self.send_error(str(e))
                 self.stop()
-                six.reraise(e, None, sys.exc_info()[2])
+                six.reraise(*sys.exc_info())
 
     def stop(self):
         self.stopped = True
