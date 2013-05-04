@@ -47,8 +47,8 @@ class GameAlgorithm(object):
         self.sock.bind('ipc://%s:%s' % (host, port))
         print('Listening')
 
-        self.stopped = True
-        while self.stopped:
+        self.stopped = False
+        while not self.stopped:
             try:
                 self.read_incoming_message()
             except Exception as e:
