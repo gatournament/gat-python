@@ -19,6 +19,9 @@ class TrucoAlgorithm(GameAlgorithm):
     def accept_truco(self, context):
         pass
 
+    def can_truco(self, context):
+        return int(context['round_value']) < 12
+
     def upcard(self, card):
         self.send_response({'action': 'upcard', 'hand_card': card})
 
