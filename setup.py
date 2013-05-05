@@ -12,7 +12,6 @@ tests_require = [
 install_requires = [
     'six==1.3.0',
     'simplejson==3.1.3',
-    'pyzmq==13.0.2',
 ]
 
 setup(name='%s' % PROJECT_NAME,

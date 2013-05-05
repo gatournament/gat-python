@@ -1,9 +1,10 @@
 # coding: utf-8
 from functools import update_wrapper
+import socket
 import sys
 
 import six
-import zmq
+
 
 try:
     import simplejson as json
@@ -38,14 +39,17 @@ class GameAlgorithm(object):
     algorithm.listen()
     '''
     def __init__(self):
-        context = zmq.Context()
-        self.sock = context.socket(zmq.REP)
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.conn = None
 
     def listen(self, host='localhost', port=None):
         if not port:
-            port = sys.argv[1] if len(sys.argv) > 1 else 88888
-        self.sock.bind('ipc://%s:%s' % (host, port))
-        print('Listening')
+            port = int(sys.argv[1]) if len(sys.argv) > 1 else 58888
+        self.sock.bind((host, port))
+        print('Listening %s' % str((host, port)))
+        self.sock.listen(1)
+        self.conn, addr = self.sock.accept()
+        print('Client connected: %s' % str(addr))
 
         self.stopped = False
         while not self.stopped:
@@ -56,16 +60,18 @@ class GameAlgorithm(object):
                 self.send_error(str(e))
                 self.stop()
                 six.reraise(*sys.exc_info())
+        self.conn.close()
 
     def stop(self):
         self.stopped = True
 
     def read_incoming_message(self):
-        message = self.sock.recv_string()
-        message = loads(message)
-        if message == 'stop':
+        message = self.conn.recv(8192) # 2**13
+        if not message or message == 'stop':
             self.stop()
-        self.process_message(message)
+        else:
+            message = loads(message)
+            self.process_message(message)
 
     def process_message(self, message):
         if message['action'] == 'play':
@@ -76,7 +82,10 @@ class GameAlgorithm(object):
 
     def send_response(self, message):
         message = dumps(message)
-        self.sock.send_string(message)
+        if sys.version_info[0] == 2:
+            self.conn.sendall(message)
+        else:
+            self.conn.sendall(bytes(message, 'utf-8'))
 
     def send_error(self, error_message):
         error = {'error': error_message}
