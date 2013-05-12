@@ -21,6 +21,16 @@ def colorize(text, color)
   end
 end
 
+task :tag => [:tests] do
+  sh "git tag #{VERSION}"
+  sh "git push origin #{VERSION}"
+end
+
+task :reset_tag => [] do
+  sh "git tag -d #{VERSION}"
+  sh "git push origin :refs/tags/#{VERSION}"
+end
+
 def virtual_env(command, env="env33")
   sh "source #{env}/bin/activate && #{command}"
 end
@@ -65,17 +75,11 @@ task :tests => [] do
   }
 end
 
-task :tag => [:tests] do
-  sh "git tag #{VERSION}"
-  sh "git push origin #{VERSION}"
+task :package => [:tests] do
+  virtual_env("python setup.py sdist")
 end
 
-task :reset_tag => [] do
-  sh "git tag -d #{VERSION}"
-  sh "git push origin :refs/tags/#{VERSION}"
-end
-
-task :publish => [:tests, :tag] do
+task :publish => [:package, :tag] do
   # http://guide.python-distribute.org/quickstart.html
   # python setup.py sdist
   # python setup.py register
@@ -91,4 +95,3 @@ end
 task :all => [:dev_env, :dependencies, :tests]
 
 task :default => [:tests]
-
