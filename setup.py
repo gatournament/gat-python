@@ -1,7 +1,7 @@
 #from distutils.core import setup
 from setuptools import setup, find_packages
 
-VERSION = open('VERSION', 'r').read().strip()
+VERSION = '0.0.2'
 PROJECT_NAME = 'gat-python'
 
 tests_require = [
