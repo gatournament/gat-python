@@ -5,7 +5,7 @@ from gat_python.python_algorithm import GameAlgorithm
 class TrucoAlgorithm(GameAlgorithm):
     def process_message(self, message):
         if message['action'] == 'play':
-            self.play(message['context'])
+            return self.play(message['context'])
         elif message['action'] == 'accept_truco':
             accept = self.accept_truco(message['context'])
             if accept:
