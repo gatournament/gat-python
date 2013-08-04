@@ -20,7 +20,7 @@ class TrucoAlgorithm(GameAlgorithm):
         pass
 
     def can_truco(self, context):
-        return int(context['round_value']) < 12
+        return bool(context['round_can_truco'])
 
     def upcard(self, card):
         self.send_response({'action': 'upcard', 'hand_card': card})
