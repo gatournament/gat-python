@@ -31,11 +31,11 @@ task :reset_tag => [] do
   sh "git push origin :refs/tags/#{VERSION}"
 end
 
-def virtual_env(command, env="env33")
+def virtual_env(command, env="env27")
   sh "source #{env}/bin/activate && #{command}"
 end
 
-def create_virtual_env(dir, python)
+def create_virtual_env(dir, python="python2.7")
   sh "virtualenv #{dir} -p #{python}"
 end
 
