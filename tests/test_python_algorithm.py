@@ -58,7 +58,7 @@ class CorrectGameAlgorithmTests(IPCTests):
         else:
             self.sock.sendall(bytes('"msg x"', 'utf-8'))
         response = self.sock.recv(8192) # 2**13
-        self.assertEquals('"echo: msg x"', response.decode('utf-8'))
+        self.assertEquals('"echo: msg x"\n', response.decode('utf-8'))
 
 
 class BuggedGameAlgorithmTests(IPCTests):
@@ -71,4 +71,4 @@ class BuggedGameAlgorithmTests(IPCTests):
         else:
             self.sock.sendall(bytes('"msg x"', 'utf-8'))
         response = self.sock.recv(8192) # 2**13
-        self.assertEquals('{"error": "runtime error"}', response.decode('utf-8'))
+        self.assertEquals('{"error": "runtime error"}\n', response.decode('utf-8'))
