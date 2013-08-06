@@ -1,5 +1,6 @@
 # coding: utf-8
 from functools import update_wrapper
+import logging
 import socket
 import sys
 
@@ -41,22 +42,27 @@ class GameAlgorithm(object):
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.conn = None
+        self.logger = logging.getLogger(self.__class__.__name__)
+
+    def log(self, message, level=logging.INFO):
+        if self.logger:
+            self.logger.log(level, '[GATPython] %s' % (message,))
 
     def listen(self, host='localhost', port=None):
         if not port:
             port = int(sys.argv[1]) if len(sys.argv) > 1 else 58888
         self.sock.bind((host, port))
-        print('Listening %s' % str((host, port)))
+        self.log('Listening %s' % str((host, port)), logging.DEBUG)
         self.sock.listen(1)
         self.conn, addr = self.sock.accept()
-        print('Client connected: %s' % str(addr))
+        self.log('Client connected: %s' % str(addr), logging.DEBUG)
 
         self.stopped = False
         while not self.stopped:
             try:
                 self.read_incoming_message()
             except Exception as e:
-                print(str(e))
+                self.log(str(e), logging.ERROR)
                 self.send_error(str(e))
                 self.stop()
                 six.reraise(*sys.exc_info())
