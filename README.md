@@ -71,6 +71,10 @@ pip install secret-algorithms-python --upgrade --no-deps
 Change Log
 -------------
 
+#### 0.0.3 (2013/08/05)
+
+* [new] ...
+
 #### 0.0.1 (2013/03/30)
 
 * [new] ...
