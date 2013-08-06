@@ -82,6 +82,7 @@ class GameAlgorithm(object):
 
     def send_response(self, message):
         message = dumps(message)
+        message = '%s\n' % message
         if sys.version_info[0] == 2:
             self.conn.sendall(message)
         else:
