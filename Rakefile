@@ -47,7 +47,7 @@ task :clean => [] do
   sh "rm -rf dist/"
 end
 
-task :install => [] do
+task :prepare => [] do
   sh "python --version"
   sh "ruby --version"
   sh "easy_install pip"
@@ -77,6 +77,10 @@ end
 
 task :package => [:tests] do
   virtual_env("python setup.py sdist")
+end
+
+task :install => [:package] do
+  virtual_env("python setup.py install")
 end
 
 task :publish => [:package, :tag] do
