@@ -7,7 +7,8 @@ class YourAlgorithm(TrucoAlgorithm):
         You must decide which card of your hand you want to upcard in the table.
         And you can truco too.
         """
-        print(context) # to see all information you have to take your decision
+        # to see all information you have to take your decision
+        # print(context)
 
         randomDecisionToTruco = random.randint(0, 10) > 5
         if self.can_truco(context) and randomDecisionToTruco:
