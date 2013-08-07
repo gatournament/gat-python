@@ -54,11 +54,11 @@ class CorrectGameAlgorithmTests(IPCTests):
 
     def test_send_and_receive_messages_through_ipc(self):
         if sys.version_info[0] == 2:
-            self.sock.sendall('"msg x"')
+            self.sock.sendall('"msg x"\n')
         else:
-            self.sock.sendall(bytes('"msg x"', 'utf-8'))
-        response = self.sock.recv(8192) # 2**13
-        self.assertEquals('"echo: msg x"\n', response.decode('utf-8'))
+            self.sock.sendall(bytes('"msg x"\n', 'utf-8'))
+        response = self.sock.makefile().readline()
+        self.assertEquals('"echo: msg x"\n', response)
 
 
 class BuggedGameAlgorithmTests(IPCTests):
@@ -67,8 +67,8 @@ class BuggedGameAlgorithmTests(IPCTests):
 
     def test_send_and_receive_messages_through_ipc(self):
         if sys.version_info[0] == 2:
-            self.sock.sendall('"msg x"')
+            self.sock.sendall('"msg x"\n')
         else:
-            self.sock.sendall(bytes('"msg x"', 'utf-8'))
-        response = self.sock.recv(8192) # 2**13
-        self.assertEquals('{"error": "runtime error"}\n', response.decode('utf-8'))
+            self.sock.sendall(bytes('"msg x"\n', 'utf-8'))
+        response = self.sock.makefile().readline()
+        self.assertEquals('{"error": "runtime error"}\n', response)

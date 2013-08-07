@@ -42,6 +42,7 @@ class GameAlgorithm(object):
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.conn = None
+        self.file = None
         self.logger = logging.getLogger(self.__class__.__name__)
 
     def log(self, message, level=logging.INFO):
@@ -55,6 +56,7 @@ class GameAlgorithm(object):
         self.log('Listening %s' % str((host, port)), logging.DEBUG)
         self.sock.listen(1)
         self.conn, addr = self.sock.accept()
+        self.file = self.conn.makefile("rb") # buffered
         self.log('Client connected: %s' % str(addr), logging.DEBUG)
 
         self.stopped = False
@@ -72,7 +74,9 @@ class GameAlgorithm(object):
         self.stopped = True
 
     def read_incoming_message(self):
-        message = self.conn.recv(8192) # 2**13
+        message = self.file.readline()
+        if message:
+            message = message.strip()
         if not message or message == 'stop':
             self.stop()
         else:
