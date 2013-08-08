@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.getcwd())
 
-from gat_python.python_algorithm import GameAlgorithm
+from gat_python.game_algorithm import GameAlgorithm
 
 
 class BuggedGameAlgorithm(GameAlgorithm):

@@ -1,5 +1,5 @@
 # coding: utf-8
-from gat_python.python_algorithm import GameAlgorithm
+from gat_python.game_algorithm import GameAlgorithm
 
 
 class TrucoAlgorithm(GameAlgorithm):

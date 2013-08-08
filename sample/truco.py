@@ -1,7 +1,8 @@
 import random
 from gat_python import TrucoAlgorithm
 
-class YourAlgorithm(TrucoAlgorithm):
+
+class Truco(TrucoAlgorithm):
     def play(self, context):
         """
         You must decide which card of your hand you want to upcard in the table.
@@ -25,5 +26,5 @@ class YourAlgorithm(TrucoAlgorithm):
         return random.randint(0, 1) == 1
 
 # Required:
-algorithm = YourAlgorithm()
+algorithm = Truco()
 algorithm.listen()
