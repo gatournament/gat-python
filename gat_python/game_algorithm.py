@@ -44,6 +44,13 @@ class GameAlgorithm(object):
         self.conn = None
         self.file = None
         self.logger = logging.getLogger(self.__class__.__name__)
+        self.config_log()
+
+    def config_log(self):
+        FORMAT = '%(message)s'
+        logging.basicConfig(format=FORMAT)
+        log_level = int(sys.argv[2]) if len(sys.argv) > 2 else logging.INFO
+        self.logger.setLevel(log_level)
 
     def log(self, message, level=logging.INFO):
         if self.logger:
