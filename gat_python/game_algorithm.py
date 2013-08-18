@@ -74,11 +74,20 @@ class GameAlgorithm(object):
                 self.log(str(e), logging.ERROR)
                 self.send_error(str(e))
                 self.stop()
+                self.close()
                 six.reraise(*sys.exc_info())
-        self.conn.close()
+        self.close()
 
     def stop(self):
         self.stopped = True
+
+    def close(self):
+        if self.conn:
+            self.conn.close()
+            self.conn = None
+        if self.sock:
+            self.sock.close()
+            self.sock = None
 
     def read_incoming_message(self):
         message = self.file.readline()
